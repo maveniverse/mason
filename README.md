@@ -40,6 +40,8 @@ dependencies:
 
 ### TOML Example (pom.toml)
 
+> ⚠️ **Warning**: Location tracking (line numbers in error messages) is not supported for TOML files.
+
 ```toml
 modelVersion = "4.0.0"
 parent = "org.apache.maven.extensions:maven-extensions:43"
@@ -66,7 +68,9 @@ dependencies = [
 }
 ```
 
-### HOCON Example (pom.conf)
+### HOCON Example (pom.conf or pom.hocon)
+
+> ⚠️ **Warning**: Advanced HOCON features like substitutions (${...}), includes, and object merging are not supported.
 
 ```hocon
 modelVersion: 4.0.0
