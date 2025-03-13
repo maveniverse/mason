@@ -1,4 +1,5 @@
 # Mason
+[![License](https://img.shields.io/badge/License-EPL--2.0-blue.svg)](https://opensource.org/licenses/EPL-2.0) [![Maven Central](https://img.shields.io/maven-central/v/eu.maveniverse.maven.mason/mason.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.jline/jline)
 
 Mason is a Maven extension that provides alternative model readers for Maven POM files, supporting multiple formats including:
 
@@ -20,7 +21,7 @@ Add the extension to your Maven installation:
 <extension>
   <groupId>eu.maveniverse.maven.mason</groupId>
   <artifactId>mason</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>0.1.0</version>
 </extension>
 ```
 
@@ -91,7 +92,7 @@ mvn clean install
 
 ## License
 
-Apache License, Version 2.0
+[Eclipse Public License, Version 2.0](https://opensource.org/licenses/EPL-2.0)
 
 ## Contributing
 
