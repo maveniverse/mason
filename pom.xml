@@ -9,6 +9,23 @@
   <artifactId>mason</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
+  <scm>
+    <connection>scm:git:git@github.com:maveniverse/mason.git</connection>
+    <developerConnection>scm:git:git@github.com:maveniverse/mason.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/maveniverse/mason</url>
+  </scm>
+
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/maveniverse/mason/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Github</system>
+    <url>https://github.com/maveniverse/mason/actions</url>
+  </ciManagement>
+
   <properties>
     <maven.version>4.0.0-rc-3</maven.version>
     <maven.compiler.release>17</maven.compiler.release>
