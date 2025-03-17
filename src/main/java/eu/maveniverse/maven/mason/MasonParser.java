@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.dataformat.toml.TomlFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import eu.maveniverse.maven.mason.hocon.HoconFactory;
+import eu.maveniverse.maven.mason.json.FlexibleJsonFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -51,7 +52,7 @@ public class MasonParser implements ModelParser {
         if (source.getPath() != null) {
             String path = source.getPath().toString().toLowerCase();
             if (path.endsWith(".json")) {
-                return new JsonFactory();
+                return new FlexibleJsonFactory();
             } else if (path.endsWith(".yaml") || path.endsWith(".yml")) {
                 return YAMLFactory.builder().build();
             } else if (path.endsWith(".toml")) {
