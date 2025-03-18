@@ -129,7 +129,7 @@ public class FlexibleJsonFactory extends JsonFactory {
                     location.getByteOffset() - 1,
                     location.getCharOffset() - 1,
                     location.getLineNr(),
-                    location.getColumnNr() - 1);
+                    location.getColumnNr() - (location.getLineNr() == 0 ? 1 : 0));
         }
 
         @Override
