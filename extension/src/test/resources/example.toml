@@ -12,6 +12,11 @@ modelVersion = "4.0.0"
 parent = "org.apache.maven.extensions:maven-extensions:43"
 id = "org.apache.maven.extensions:maven-yaml-extension:1.0.0-SNAPSHOT"
 packaging = "jar"
+
+dependencyManagement.dependencies = [
+  "org.junit:junit-bom:5.12.0@import"
+]
+
 dependencies = [
   # Runtime
   "org.apache.maven:maven-api-spi:${maven.version}@provided",
@@ -21,7 +26,7 @@ dependencies = [
   "javax.inject:javax.inject:1",
   "javax.annotation:javax.annotation-api:1.3.2",
   # Test
-  "org.junit.jupiter:junit-jupiter:5.12.0@test",
+  "org.junit.jupiter:junit-jupiter@test",
   "org.apache.maven:maven-support:${maven.version}@test"
 ]
 

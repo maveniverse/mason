@@ -11,6 +11,7 @@
 package eu.maveniverse.maven.mason;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.dataformat.toml.TomlFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import eu.maveniverse.maven.mason.hocon.HoconFactory;
@@ -47,7 +48,18 @@ public class MasonParser implements ModelParser {
         if (source.getPath() != null) {
             String path = source.getPath().toString().toLowerCase();
             if (path.endsWith(".json")) {
-                return new JsonFactory();
+                return JsonFactory.builder()
+                        .enable(JsonReadFeature.ALLOW_UNQUOTED_FIELD_NAMES)
+                        .enable(JsonReadFeature.ALLOW_TRAILING_COMMA)
+                        .enable(JsonReadFeature.ALLOW_SINGLE_QUOTES)
+                        .enable(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER)
+                        .enable(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS)
+                        .enable(JsonReadFeature.ALLOW_JAVA_COMMENTS)
+                        .enable(JsonReadFeature.ALLOW_YAML_COMMENTS)
+                        .enable(JsonReadFeature.ALLOW_LEADING_DECIMAL_POINT_FOR_NUMBERS)
+                        .enable(JsonReadFeature.ALLOW_TRAILING_DECIMAL_POINT_FOR_NUMBERS)
+                        .enable(JsonReadFeature.ALLOW_LEADING_PLUS_SIGN_FOR_NUMBERS)
+                        .build();
             } else if (path.endsWith(".yaml") || path.endsWith(".yml")) {
                 return YAMLFactory.builder().build();
             } else if (path.endsWith(".toml")) {
