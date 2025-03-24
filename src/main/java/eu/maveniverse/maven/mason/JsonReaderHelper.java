@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.maven.api.model.InputLocation;
 import org.apache.maven.api.model.InputSource;
 import org.apache.maven.api.xml.XmlNode;
@@ -51,12 +50,6 @@ public class JsonReaderHelper {
         }
         return plural;
     }
-
-    /**
-     * Known Maven dependency scopes.
-     */
-    public static final Set<String> KNOWN_SCOPES =
-            Set.of("compile-only", "compile", "runtime", "provided", "test-only", "test", "test-runtime", "system", "import");
 
     /**
      * Parses a GAV (GroupId:ArtifactId:Version) string.
