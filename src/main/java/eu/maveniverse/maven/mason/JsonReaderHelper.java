@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.maven.api.model.InputLocation;
 import org.apache.maven.api.model.InputSource;
 import org.apache.maven.api.xml.XmlNode;
@@ -43,12 +42,6 @@ public class JsonReaderHelper {
         }
         return plural;
     }
-
-    /**
-     * Known Maven dependency scopes.
-     */
-    public static final Set<String> KNOWN_SCOPES =
-            Set.of("compile-only", "compile", "runtime", "provided", "test-only", "test", "test-runtime", "system");
 
     /**
      * Parses a GAV (GroupId:ArtifactId:Version) string.
@@ -106,12 +99,6 @@ public class JsonReaderHelper {
         String[] scopeSplit = str.split("@", 2);
         String coords = scopeSplit[0];
         String scope = scopeSplit.length > 1 ? scopeSplit[1] : null;
-
-        if (scope != null && !KNOWN_SCOPES.contains(scope)) {
-            throw new IOException("Unknown scope '" + scope + "' in GASVTC string '" + str
-                    + "' at line " + parser.currentLocation().getLineNr()
-                    + ", column " + parser.currentLocation().getColumnNr());
-        }
 
         String[] parts = coords.split(":");
         if (parts.length < 2 || parts.length > 5) {
