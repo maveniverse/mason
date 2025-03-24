@@ -220,6 +220,7 @@ public class HoconParser extends ParserBase {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public String getCurrentName() throws IOException {
         return currentText;
     }
