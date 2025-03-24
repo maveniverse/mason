@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+import org.apache.maven.api.di.Named;
+import org.apache.maven.api.di.Singleton;
 import org.apache.maven.api.model.InputSource;
 import org.apache.maven.api.model.Model;
 import org.apache.maven.api.services.Source;
@@ -26,6 +28,8 @@ import org.apache.maven.api.services.Sources;
 import org.apache.maven.api.spi.ModelParser;
 import org.apache.maven.api.spi.ModelParserException;
 
+@Singleton
+@Named("mason")
 public class MasonParser implements ModelParser {
 
     @Override
