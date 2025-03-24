@@ -7,6 +7,11 @@
 		"javaVersion": 17,
 		"maven.version": "4.0.0-rc-3"
 	},
+	"dependencyManagement": {
+		"dependencies": [
+			"org.junit:junit-bom:5.12.0@import"
+		]
+	},
 	"dependencies": [
 		"org.apache.maven:maven-api-spi:${maven.version}@provided",
 		"org.apache.maven:maven-api-core:${maven.version}@provided",
@@ -14,7 +19,7 @@
 		"org.yaml:snakeyaml:2.4", 
 		"javax.inject:javax.inject:1", 
 		"javax.annotation:javax.annotation-api:1.3.2", 
-		"org.junit.jupiter:junit-jupiter:5.12.0@test",
+		"org.junit.jupiter:junit-jupiter@test",
 		"org.apache.maven:maven-support:${maven.version}@test"
 	],
 	"build": {
