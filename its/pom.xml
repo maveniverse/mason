@@ -30,6 +30,7 @@
 
   <dependencies>
     <dependency>
+      <groupId>eu.maveniverse.maven.mason</groupId>
       <artifactId>mason</artifactId>
     </dependency>
   </dependencies>
