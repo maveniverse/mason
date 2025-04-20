@@ -30,7 +30,7 @@
 
   <dependencies>
     <dependency>
-      <!-- G and V can be omitted when in reactor, but we run ITs with -rf :its -->
+      <!-- G and V can be omitted when in reactor, but we run ITs with -f its -->
       <groupId>eu.maveniverse.maven.mason</groupId>
       <artifactId>mason</artifactId>
       <version>${project.version}</version>
