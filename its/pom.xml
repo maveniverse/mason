@@ -22,9 +22,18 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Mason ITs.</description>
 
+  <properties>
+    <enforcer.skip>true</enforcer.skip>
+    <maven.install.skip>true</maven.install.skip>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <dependencies>
     <dependency>
+      <!-- G and V can be omitted when in reactor, but we run ITs with -f its -->
+      <groupId>eu.maveniverse.maven.mason</groupId>
       <artifactId>mason</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 
@@ -36,7 +45,6 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-invoker-plugin</artifactId>
-            <version>3.9.0</version>
             <configuration>
               <cloneProjectsTo>${project.build.directory}/its</cloneProjectsTo>
               <cloneClean>true</cloneClean>
