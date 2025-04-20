@@ -9,9 +9,9 @@ on:
 jobs:
   build:
     name: Verify
-    uses: maveniverse/parent/.github/workflows/ci.yml@release-26
+    uses: maveniverse/parent/.github/workflows/ci.yml@release-28
     with:
-      jdk-matrix: '[ "17", "21", "23" ]'
+      jdk-matrix: '[ "17", "21", "24" ]'
       maven-matrix: '[ "4.0.0-rc-3" ]'
       maven-test: './mvnw clean verify -Prun-its -e -B -V'
 
