@@ -13,5 +13,5 @@ jobs:
     with:
       jdk-matrix: '[ "17", "21", "24" ]'
       maven-matrix: '[ "4.0.0-rc-3" ]'
-      maven-test: './mvnw clean verify -Prun-its -e -B -V'
+      maven-test: './mvnw clean verify -Prun-its -f it -e -B -V'
 
