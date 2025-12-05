@@ -53,8 +53,7 @@ class HoconLexerTest {
 
     @Test
     void testQuotedStrings() throws IOException {
-        String input =
-                """
+        String input = """
             "double quoted"
             "another quoted"
             "escaped \\"quote\\""
@@ -177,8 +176,7 @@ class HoconLexerTest {
 
     @Test
     void testComplexInput() throws IOException {
-        String input =
-                """
+        String input = """
             {
                 "key1" = "value1",
                 key2: [
@@ -455,8 +453,7 @@ class HoconLexerTest {
 
     @Test
     void testValidUnquotedStringCharacters() throws IOException {
-        String input =
-                """
+        String input = """
             normal123
             with_underscore
             with-dash
@@ -530,8 +527,7 @@ class HoconLexerTest {
 
     @Test
     void testMultilineStrings() throws IOException {
-        String input =
-                """
+        String input = """
             key = \"\"\"
                 This is a
                 multiline string
@@ -557,8 +553,7 @@ class HoconLexerTest {
 
     @Test
     void testPathExpressions() throws IOException {
-        String input =
-                """
+        String input = """
             a.b.c = value1
             "a.b.c" = value2
             a."b=c".d = value3
@@ -579,8 +574,7 @@ class HoconLexerTest {
 
     @Test
     void testIncludeDirectives() throws IOException {
-        String input =
-                """
+        String input = """
             include "application.conf"
             include "relative/path/config.conf"
             include "/absolute/path/config.conf"
@@ -593,8 +587,7 @@ class HoconLexerTest {
 
     @Test
     void testTripleQuotedStrings() throws IOException {
-        String input =
-                """
+        String input = """
             multiline1 = \"\"\"
                 This is a
                 multiline string
@@ -618,8 +611,7 @@ class HoconLexerTest {
 
     @Test
     void testDurationUnits() throws IOException {
-        String input =
-                """
+        String input = """
             timeouts {
                 nano = 10ns
                 micro = 10us
@@ -643,8 +635,7 @@ class HoconLexerTest {
 
     @Test
     void testSizeUnits() throws IOException {
-        String input =
-                """
+        String input = """
             sizes {
                 bytes = 10B
                 kilos = 10K
@@ -668,8 +659,7 @@ class HoconLexerTest {
 
     @Test
     void testSubstitutionTokenization() throws IOException {
-        String input =
-                """
+        String input = """
             a = 42
             b = ${a}
             c = ${?optional}
@@ -800,8 +790,7 @@ class HoconLexerTest {
 
     @Test
     void testValueConcatenation() throws IOException {
-        String input =
-                """
+        String input = """
             path = ${base}/subdir/${version}
             optional = ${?optional_value}
             """;
@@ -835,8 +824,7 @@ class HoconLexerTest {
 
     @Test
     void testMultiLineComments() throws IOException {
-        String input =
-                """
+        String input = """
             key1 = value1 /* This is a
             multiline comment
             spanning lines */ key2 = value2
@@ -886,8 +874,7 @@ class HoconLexerTest {
 
     @Test
     void testNestedObjects() throws IOException {
-        String input =
-                """
+        String input = """
             outer {
                 middle {
                     inner = {
@@ -920,8 +907,7 @@ class HoconLexerTest {
 
     @Test
     void testMixedArraysAndObjects() throws IOException {
-        String input =
-                """
+        String input = """
             mixed = [
                 { key1 = value1 },
                 { key2 = value2 },
@@ -949,8 +935,7 @@ class HoconLexerTest {
 
     @Test
     void testEmptyStructures() throws IOException {
-        String input =
-                """
+        String input = """
             empty_object = {}
             empty_array = []
             empty_nested = {
@@ -993,8 +978,7 @@ class HoconLexerTest {
     @Test
     void testUnquotedStringRules() throws IOException {
         // Valid unquoted strings
-        String validInput =
-                """
+        String validInput = """
             alpha = abcdefghijklmnopqrstuvwxyz
             numeric = 1234567890
             special = -._
@@ -1016,8 +1000,7 @@ class HoconLexerTest {
 
     @Test
     void testNestedSubstitutions() throws IOException {
-        String input =
-                """
+        String input = """
             foo = bar
             bar = baz
             nested = ${foo.${bar}}
@@ -1046,8 +1029,7 @@ class HoconLexerTest {
 
     @Test
     void testComplexValueConcatenation() throws IOException {
-        String input =
-                """
+        String input = """
             // String concatenation
             str1 = Hello " world" 123
             str2 = foo bar ${ref}
@@ -1086,8 +1068,7 @@ class HoconLexerTest {
 
     @Test
     void testNumberFormats() throws IOException {
-        String input =
-                """
+        String input = """
             // Integer formats
             decimal = 12345
             hex = 0xDEADBEEF
@@ -1116,8 +1097,7 @@ class HoconLexerTest {
 
     @Test
     void testIncludeDirective() throws IOException {
-        String input =
-                """
+        String input = """
             include "application.conf"
             include "reference.conf"
 
@@ -1142,8 +1122,7 @@ class HoconLexerTest {
 
     @Test
     void testTripleQuotedString() throws IOException {
-        String input =
-                """
+        String input = """
             key = \"\"\"
                 This is a triple-quoted string
                 that can contain "quotes"

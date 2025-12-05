@@ -56,8 +56,7 @@ class HoconParserTest {
 
     @Test
     void testBasicParsing() throws IOException {
-        String input =
-                """
+        String input = """
             name = "test"
             numbers: [1, 2, 3]
             object {
@@ -124,8 +123,7 @@ class HoconParserTest {
 
     @Test
     void testArrays() throws IOException {
-        String input =
-                """
+        String input = """
             empty: []
             mixed: [1, "two", 3.14, true]
             nested: [[1,2], [3,4]]
@@ -167,8 +165,7 @@ class HoconParserTest {
 
     @Test
     void testStrings() throws IOException {
-        String input =
-                """
+        String input = """
             doubleQuoted: "hello world"
             unquoted: hello world value
             escaped: "hello\\nworld\\t!"
@@ -210,8 +207,7 @@ class HoconParserTest {
 
     @Test
     void testNumbers() throws IOException {
-        String input =
-                """
+        String input = """
             integer: 42
             negative: -42
             decimal: 3.14
