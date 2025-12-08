@@ -310,16 +310,24 @@ public class ${className} {
         if (token.isScalarValue()) {
             // Handle the string format (id field)
             String[] gav = parseGavString(parser.getText(), parser);
-            ${classLcapName}.groupId(gav[0]);
-            ${classLcapName}.artifactId(gav[1]);
+            if (gav[0] != null) {
+                ${classLcapName}.groupId(gav[0]);
+            }
+            if (gav[1] != null) {
+                ${classLcapName}.artifactId(gav[1]);
+            }
             if (gav[2] != null) {
                 ${classLcapName}.version(gav[2]);
             }
     #if ( $locationTracking )
             if (addLocationInformation) {
                 InputLocation loc = new InputLocation(location.getLineNr(), location.getColumnNr(), inputSrc);
-                ${classLcapName}.location("groupId", loc);
-                ${classLcapName}.location("artifactId", loc);
+                if (gav[0] != null) {
+                    ${classLcapName}.location("groupId", loc);
+                }
+                if (gav[1] != null) {
+                    ${classLcapName}.location("artifactId", loc);
+                }
                 if (gav[2] != null) {
                     ${classLcapName}.location("version", loc);
                 }
