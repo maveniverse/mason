@@ -45,6 +45,8 @@ public class JsonReaderHelper {
 
     /**
      * Parses a GAV (GroupId:ArtifactId:Version) string.
+     * With Maven 4's inference mechanism, all parts can be optional/empty
+     * as they may be inferred from the parent or other sources.
      * @return String array containing [groupId, artifactId, version]
      */
     public static String[] parseGavString(String str, JsonParser parser) throws IOException {
@@ -53,33 +55,34 @@ public class JsonReaderHelper {
                     + parser.currentLocation().getLineNr() + ", column "
                     + parser.currentLocation().getColumnNr());
         }
-        String[] parts = str.split(":");
-        if (parts.length < 2 || parts.length > 3) {
-            throw new IOException("GAV string must have 2 or 3 parts (groupId:artifactId[:version]), found "
+
+        String[] result = new String[3]; // [groupId, artifactId, version]
+
+        // Handle empty string (all parts will be inferred)
+        if (str.isEmpty()) {
+            return result;
+        }
+
+        String[] parts = str.split(":", -1); // -1 to keep trailing empty strings
+        if (parts.length > 3) {
+            throw new IOException("GAV string must have at most 3 parts (groupId:artifactId[:version]), found "
                     + parts.length + " parts in '" + str + "' at line "
                     + parser.currentLocation().getLineNr()
                     + ", column " + parser.currentLocation().getColumnNr());
         }
 
-        String[] result = new String[3]; // [groupId, artifactId, version]
-        result[0] = parts[0].isEmpty() ? null : parts[0]; // groupId
-        result[1] = parts[1].isEmpty() ? null : parts[1]; // artifactId
-
-        if (result[0] == null || result[1] == null) {
-            throw new IOException("GroupId and artifactId cannot be empty in GAV string '" + str
-                    + "' at line " + parser.currentLocation().getLineNr()
-                    + ", column " + parser.currentLocation().getColumnNr());
-        }
-
-        if (parts.length == 3) {
-            result[2] = parts[2].isEmpty() ? null : parts[2]; // version
-        }
+        // All parts are optional with Maven 4 inference
+        if (parts.length > 0) result[0] = parts[0].isEmpty() ? null : parts[0]; // groupId
+        if (parts.length > 1) result[1] = parts[1].isEmpty() ? null : parts[1]; // artifactId
+        if (parts.length > 2) result[2] = parts[2].isEmpty() ? null : parts[2]; // version
 
         return result;
     }
 
     /**
-     * Parses a GASVTCO (GroupId:ArtifactId[:Scope][:Version][:Type][:Classifier][?]) string.
+     * Parses a GASVTCO (GroupId:ArtifactId[:Version][:Type][:Classifier][@Scope][?]) string.
+     * With Maven 4's inference mechanism, groupId can be optional as it may be inferred
+     * from dependency management or parent. ArtifactId is still required.
      * @return String array containing [groupId, artifactId, scope, version, type, classifier, optional]
      */
     public static String[] parseGasvtcoString(String str, JsonParser parser) throws IOException {
@@ -100,28 +103,28 @@ public class JsonReaderHelper {
         String coords = scopeSplit[0];
         String scope = scopeSplit.length > 1 ? scopeSplit[1] : null;
 
-        String[] parts = coords.split(":");
-        if (parts.length < 2 || parts.length > 5) {
+        String[] result = new String[7]; // [groupId, artifactId, scope, version, type, classifier, optional]
+
+        // Handle empty coordinates (only scope and/or optional specified)
+        if (coords.isEmpty()) {
+            result[2] = scope;
+            result[6] = optional ? "true" : null;
+            return result;
+        }
+
+        String[] parts = coords.split(":", -1); // -1 to keep trailing empty strings
+        if (parts.length > 5) {
             throw new IOException(
-                    "GASVTC string must have between 2 and 5 parts (groupId:artifactId[:version][:type][:classifier]), found "
+                    "GASVTC string must have at most 5 parts (groupId:artifactId[:version][:type][:classifier]), found "
                             + parts.length + " parts in '" + str + "' at line "
                             + parser.currentLocation().getLineNr()
                             + ", column " + parser.currentLocation().getColumnNr());
         }
 
-        String[] result = new String[7]; // [groupId, artifactId, scope, version, type, classifier, optional]
-
-        // Required parts
-        result[0] = parts[0].isEmpty() ? null : parts[0]; // groupId
-        result[1] = parts[1].isEmpty() ? null : parts[1]; // artifactId
-
-        if (result[0] == null || result[1] == null) {
-            throw new IOException("GroupId and artifactId cannot be empty in GASVTC string '" + str
-                    + "' at line " + parser.currentLocation().getLineNr()
-                    + ", column " + parser.currentLocation().getColumnNr());
-        }
-
-        // Optional parts
+        // With Maven 4 inference, groupId can be optional (inferred from dependencyManagement or parent)
+        // ArtifactId is typically still required for dependencies
+        if (parts.length > 0) result[0] = parts[0].isEmpty() ? null : parts[0]; // groupId
+        if (parts.length > 1) result[1] = parts[1].isEmpty() ? null : parts[1]; // artifactId
         if (parts.length > 2) result[3] = parts[2].isEmpty() ? null : parts[2]; // version
         if (parts.length > 3) result[4] = parts[3].isEmpty() ? null : parts[3]; // type
         if (parts.length > 4) result[5] = parts[4].isEmpty() ? null : parts[4]; // classifier
