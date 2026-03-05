@@ -21,58 +21,62 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Mason Maven Extension.</description>
 
+  <properties>
+    <version.jackson>2.21.1</version.jackson>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-api-spi</artifactId>
-      <version>${maven.version}</version>
+      <version>${version.maven}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-api-model</artifactId>
-      <version>${maven.version}</version>
+      <version>${version.maven}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-api-core</artifactId>
-      <version>${maven.version}</version>
+      <version>${version.maven}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-api-di</artifactId>
-      <version>${maven.version}</version>
+      <version>${version.maven}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-xml</artifactId>
-      <version>${maven.version}</version>
+      <version>${version.maven}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>2.20.1</version>
+      <version>${version.jackson}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-toml</artifactId>
-      <version>2.20.1</version>
+      <version>${version.jackson}</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>6.0.1</version>
+      <version>6.0.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-support</artifactId>
-      <version>${maven.version}</version>
+      <version>${version.maven}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.typesafe</groupId>
       <artifactId>config</artifactId>
-      <version>1.4.5</version>
+      <version>1.4.6</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -94,7 +98,7 @@
                 <artifactItem>
                   <groupId>org.apache.maven</groupId>
                   <artifactId>maven-api-model</artifactId>
-                  <version>${maven.version}</version>
+                  <version>${version.maven}</version>
                   <type>mdo</type>
                 </artifactItem>
               </artifactItems>
@@ -105,7 +109,7 @@
       <plugin>
         <groupId>org.codehaus.modello</groupId>
         <artifactId>modello-maven-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>2.6.0</version>
         <executions>
           <execution>
             <id>generate-jackson-reader</id>
@@ -115,7 +119,7 @@
             <phase>generate-sources</phase>
             <configuration>
               <version>4.1.0</version>
-              <models>target/dependency/maven-api-model-${maven.version}.mdo</models>
+              <models>target/dependency/maven-api-model-${version.maven}.mdo</models>
               <templates>src/main/mdo/jackson-reader.vm</templates>
               <params>
                 <param>packageModelV4=org.apache.maven.api.model</param>
