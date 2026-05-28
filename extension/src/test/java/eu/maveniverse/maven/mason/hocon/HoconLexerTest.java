@@ -441,9 +441,8 @@ class HoconLexerTest {
 
             assertTrue(
                     exception.getMessage().contains(expectedError),
-                    String.format(
-                            "Expected error message containing '%s' but got: %s",
-                            expectedError, exception.getMessage()));
+                    "Expected error message containing '%s' but got: %s"
+                            .formatted(expectedError, exception.getMessage()));
 
             assertTrue(
                     exception.getMessage().contains("try enclosing the key or value in double quotes"),

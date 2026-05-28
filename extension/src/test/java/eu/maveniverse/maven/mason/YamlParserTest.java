@@ -31,7 +31,7 @@ import org.apache.maven.api.model.Prerequisites;
 import org.apache.maven.api.model.ReportPlugin;
 import org.apache.maven.api.model.Reporting;
 import org.apache.maven.api.services.Sources;
-import org.apache.maven.internal.xml.XmlNodeImpl;
+import org.apache.maven.api.xml.XmlNode;
 import org.apache.maven.model.v4.MavenStaxWriter;
 import org.junit.jupiter.api.Test;
 
@@ -84,35 +84,35 @@ class YamlParserTest {
                                                 .groupId("org.apache.maven.plugins")
                                                 .artifactId("maven-checkstyle-plugin")
                                                 .version("3.3.0")
-                                                .configuration(new XmlNodeImpl(
+                                                .configuration(XmlNode.newInstance(
                                                         "configuration",
                                                         null,
                                                         null,
                                                         List.of(
-                                                                new XmlNodeImpl("source", "17", null, null, null),
-                                                                new XmlNodeImpl("target", "17", null, null, null)),
+                                                                XmlNode.newInstance("source", "17", null, null, null),
+                                                                XmlNode.newInstance("target", "17", null, null, null)),
                                                         null))
                                                 .build(),
                                         Plugin.newBuilder()
                                                 .groupId("org.apache.maven.plugins")
                                                 .artifactId("maven-site-plugin")
                                                 .version("3.12.1")
-                                                .configuration(new XmlNodeImpl(
+                                                .configuration(XmlNode.newInstance(
                                                         "configuration",
                                                         null,
                                                         null,
-                                                        List.of(new XmlNodeImpl("locales", "en", null, null, null)),
+                                                        List.of(XmlNode.newInstance("locales", "en", null, null, null)),
                                                         null))
                                                 .build(),
                                         Plugin.newBuilder()
                                                 .groupId("org.apache.maven.plugins")
                                                 .artifactId("maven-deploy-plugin")
                                                 .version("3.1.1")
-                                                .configuration(new XmlNodeImpl(
+                                                .configuration(XmlNode.newInstance(
                                                         "configuration",
                                                         null,
                                                         null,
-                                                        List.of(new XmlNodeImpl("skip", "false", null, null, null)),
+                                                        List.of(XmlNode.newInstance("skip", "false", null, null, null)),
                                                         null))
                                                 .build(),
                                         Plugin.newBuilder()
@@ -147,34 +147,34 @@ class YamlParserTest {
                                         .groupId("org.apache.maven.plugins")
                                         .artifactId("maven-checkstyle-plugin")
                                         .version("3.3.0")
-                                        .configuration(new XmlNodeImpl(
+                                        .configuration(XmlNode.newInstance(
                                                 "configuration",
                                                 null,
                                                 null,
                                                 List.of(
-                                                        new XmlNodeImpl("source", "17", null, null, null),
-                                                        new XmlNodeImpl("target", "17", null, null, null)),
+                                                        XmlNode.newInstance("source", "17", null, null, null),
+                                                        XmlNode.newInstance("target", "17", null, null, null)),
                                                 null))
                                         .build(),
                                 Plugin.newBuilder()
                                         .groupId("org.apache.maven.plugins")
                                         .artifactId("maven-site-plugin")
                                         .version("3.12.1")
-                                        .configuration(new XmlNodeImpl(
+                                        .configuration(XmlNode.newInstance(
                                                 "configuration",
                                                 null,
                                                 null,
-                                                List.of(new XmlNodeImpl("locales", "en", null, null, null)),
+                                                List.of(XmlNode.newInstance("locales", "en", null, null, null)),
                                                 null))
                                         .build(),
                                 Plugin.newBuilder()
                                         .groupId("org.apache.maven.plugins")
                                         .artifactId("maven-deploy-plugin")
-                                        .configuration(new XmlNodeImpl(
+                                        .configuration(XmlNode.newInstance(
                                                 "configuration",
                                                 null,
                                                 null,
-                                                List.of(new XmlNodeImpl("skip", "false", null, null, null)),
+                                                List.of(XmlNode.newInstance("skip", "false", null, null, null)),
                                                 null))
                                         .build(),
                                 Plugin.newBuilder()
@@ -287,11 +287,11 @@ class YamlParserTest {
                                 .groupId("org.apache.maven.plugins")
                                 .artifactId("maven-surefire-report-plugin")
                                 .version("3.1.2")
-                                .configuration(new XmlNodeImpl(
+                                .configuration(XmlNode.newInstance(
                                         "configuration",
                                         null,
                                         null,
-                                        List.of(new XmlNodeImpl("showSuccess", "true", null, null, null)),
+                                        List.of(XmlNode.newInstance("showSuccess", "true", null, null, null)),
                                         null))
                                 .build()))
                         .build())

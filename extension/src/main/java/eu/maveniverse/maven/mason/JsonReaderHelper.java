@@ -208,7 +208,7 @@ public class JsonReaderHelper {
 
         JsonToken token = parser.nextToken();
         if (token == JsonToken.VALUE_NULL) {
-            return new XmlNodeImpl(name, null, attributes, children, location);
+            return XmlNode.newInstance(name, null, attributes, children, location);
         }
 
         while (token != JsonToken.END_OBJECT && token != null) {
@@ -246,7 +246,7 @@ public class JsonReaderHelper {
                                             }
                                         }
                                         parser.nextToken(); // Skip the outer object's END_OBJECT
-                                        arrayChildren.add(new XmlNodeImpl(
+                                        arrayChildren.add(XmlNode.newInstance(
                                                 singularName,
                                                 null,
                                                 new LinkedHashMap<>(),
@@ -260,7 +260,7 @@ public class JsonReaderHelper {
                                     while (token == JsonToken.FIELD_NAME) {
                                         String objFieldName = parser.currentName();
                                         token = parser.nextToken();
-                                        objectChildren.add(new XmlNodeImpl(
+                                        objectChildren.add(XmlNode.newInstance(
                                                 objFieldName,
                                                 parser.getText(),
                                                 new LinkedHashMap<>(),
@@ -268,7 +268,7 @@ public class JsonReaderHelper {
                                                 createLocation(parser, inputSrc, addLocationInformation)));
                                         token = parser.nextToken();
                                     }
-                                    arrayChildren.add(new XmlNodeImpl(
+                                    arrayChildren.add(XmlNode.newInstance(
                                             singularName,
                                             null,
                                             new LinkedHashMap<>(),
@@ -277,7 +277,7 @@ public class JsonReaderHelper {
                                 }
                             }
                         } else if (token.isScalarValue()) {
-                            arrayChildren.add(new XmlNodeImpl(
+                            arrayChildren.add(XmlNode.newInstance(
                                     singularName,
                                     parser.getText(),
                                     new LinkedHashMap<>(),
@@ -285,7 +285,7 @@ public class JsonReaderHelper {
                                     createLocation(parser, inputSrc, addLocationInformation)));
                         }
                     }
-                    children.add(new XmlNodeImpl(
+                    children.add(XmlNode.newInstance(
                             fieldName,
                             null,
                             new LinkedHashMap<>(),
@@ -295,7 +295,7 @@ public class JsonReaderHelper {
                     if (fieldName.startsWith("@")) {
                         attributes.put(fieldName.substring(1), parser.getText());
                     } else {
-                        children.add(new XmlNodeImpl(
+                        children.add(XmlNode.newInstance(
                                 fieldName,
                                 parser.getText(),
                                 new LinkedHashMap<>(),
@@ -309,6 +309,6 @@ public class JsonReaderHelper {
             token = parser.nextToken();
         }
 
-        return new XmlNodeImpl(name, value, attributes, children, location);
+        return XmlNode.newInstance(name, value, attributes, children, location);
     }
 }
