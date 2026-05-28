@@ -20,7 +20,6 @@ import java.util.Map;
 import org.apache.maven.api.model.InputLocation;
 import org.apache.maven.api.model.InputSource;
 import org.apache.maven.api.xml.XmlNode;
-import org.apache.maven.internal.xml.XmlNodeImpl;
 
 /**
  * Helper methods for JSON/YAML parsing in Maven model readers.
@@ -237,7 +236,7 @@ public class JsonReaderHelper {
                                             if (token == JsonToken.FIELD_NAME) {
                                                 String objFieldName = parser.currentName();
                                                 token = parser.nextToken();
-                                                objectChildren.add(new XmlNodeImpl(
+                                                objectChildren.add(XmlNode.newInstance(
                                                         objFieldName,
                                                         parser.getText(),
                                                         new LinkedHashMap<>(),
