@@ -17,7 +17,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
 import java.util.Map;
 import javax.xml.stream.XMLStreamException;
 import org.apache.maven.api.model.Model;
@@ -33,7 +32,7 @@ class MasonParserTest {
 
     private MasonParser parser;
     private Model referenceModel;
-    private static final Map<String, Object> OPTIONS = Collections.emptyMap();
+    private static final Map<String, Object> OPTIONS = Map.of();
 
     @BeforeEach
     void setUp() throws Exception {
