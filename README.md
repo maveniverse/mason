@@ -13,19 +13,32 @@ Mason is a Maven extension that provides alternative model readers for Maven POM
 * Java 17+
 * Maven 4.0.0-rc-3+
 
-## Usage
+## Getting Started
 
-Add the extension to your Maven installation:
+1. Make sure you are using **Maven 4.0.0-rc-3 or later**. Mason does not work with Maven 3.x.
+
+2. Create the file `.mvn/extensions.xml` **in your project root directory** (next to your `pom.yaml` or `pom.json5`):
 
 ```xml
-<extension>
-  <groupId>eu.maveniverse.maven.mason</groupId>
-  <artifactId>mason</artifactId>
-  <version>0.2.0</version>
-</extension>
+<?xml version="1.0" encoding="UTF-8"?>
+<extensions xmlns="http://maven.apache.org/EXTENSIONS/1.2.0">
+  <extension>
+    <groupId>eu.maveniverse.maven.mason</groupId>
+    <artifactId>mason</artifactId>
+    <version>0.3.0</version>
+  </extension>
+</extensions>
 ```
 
-Then you can use alternative formats for your POM files:
+3. Replace your `pom.xml` with a `pom.yaml`, `pom.json5`, `pom.conf`, or `pom.toml` file.
+
+4. Run Maven as usual: `mvn verify`
+
+> **Note:** The `.mvn/extensions.xml` file must be in the project root directory (the same directory as your POM file). For multi-module projects, it only needs to be in the root project — child modules will inherit the extension.
+
+## Format Examples
+
+The following examples show how to write a POM in each supported format:
 
 ### YAML Example (pom.yaml)
 
