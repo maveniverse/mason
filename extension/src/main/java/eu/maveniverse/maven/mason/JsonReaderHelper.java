@@ -231,46 +231,56 @@ public class JsonReaderHelper {
                                     // Skip the wrapper field, use its contents directly
                                     token = parser.nextToken(); // Move to the start of inner object
                                     if (token == JsonToken.START_OBJECT) {
+                                        Map<String, String> objAttributes = new LinkedHashMap<>();
                                         List<XmlNode> objectChildren = new ArrayList<>();
                                         while ((token = parser.nextToken()) != JsonToken.END_OBJECT) {
                                             if (token == JsonToken.FIELD_NAME) {
                                                 String objFieldName = parser.currentName();
                                                 token = parser.nextToken();
-                                                objectChildren.add(XmlNode.newInstance(
-                                                        objFieldName,
-                                                        parser.getText(),
-                                                        new LinkedHashMap<>(),
-                                                        new ArrayList<>(),
-                                                        createLocation(parser, inputSrc, addLocationInformation)));
+                                                if (objFieldName.startsWith("@")) {
+                                                    objAttributes.put(objFieldName.substring(1), parser.getText());
+                                                } else {
+                                                    objectChildren.add(XmlNode.newInstance(
+                                                            objFieldName,
+                                                            parser.getText(),
+                                                            new LinkedHashMap<>(),
+                                                            new ArrayList<>(),
+                                                            createLocation(parser, inputSrc, addLocationInformation)));
+                                                }
                                             }
                                         }
                                         parser.nextToken(); // Skip the outer object's END_OBJECT
                                         arrayChildren.add(XmlNode.newInstance(
                                                 singularName,
                                                 null,
-                                                new LinkedHashMap<>(),
+                                                objAttributes,
                                                 objectChildren,
                                                 createLocation(parser, inputSrc, addLocationInformation)));
                                     }
                                 } else {
                                     // Regular object, process its fields
+                                    Map<String, String> objAttributes = new LinkedHashMap<>();
                                     List<XmlNode> objectChildren = new ArrayList<>();
                                     parser.currentName(); // Reset to first field
                                     while (token == JsonToken.FIELD_NAME) {
                                         String objFieldName = parser.currentName();
                                         token = parser.nextToken();
-                                        objectChildren.add(XmlNode.newInstance(
-                                                objFieldName,
-                                                parser.getText(),
-                                                new LinkedHashMap<>(),
-                                                new ArrayList<>(),
-                                                createLocation(parser, inputSrc, addLocationInformation)));
+                                        if (objFieldName.startsWith("@")) {
+                                            objAttributes.put(objFieldName.substring(1), parser.getText());
+                                        } else {
+                                            objectChildren.add(XmlNode.newInstance(
+                                                    objFieldName,
+                                                    parser.getText(),
+                                                    new LinkedHashMap<>(),
+                                                    new ArrayList<>(),
+                                                    createLocation(parser, inputSrc, addLocationInformation)));
+                                        }
                                         token = parser.nextToken();
                                     }
                                     arrayChildren.add(XmlNode.newInstance(
                                             singularName,
                                             null,
-                                            new LinkedHashMap<>(),
+                                            objAttributes,
                                             objectChildren,
                                             createLocation(parser, inputSrc, addLocationInformation)));
                                 }
