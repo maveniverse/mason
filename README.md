@@ -30,7 +30,7 @@ Mason is a Maven extension that provides alternative model readers for Maven POM
 </extensions>
 ```
 
-3. Replace your `pom.xml` with a `pom.yaml`, `pom.json5`, `pom.conf`, or `pom.toml` file.
+3. Replace your `pom.xml` with a `pom.yaml`, `pom.json`, `pom.conf`, or `pom.toml` file.
 
 4. Run Maven as usual: `mvn verify`
 
