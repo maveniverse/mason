@@ -242,6 +242,51 @@ class YamlParserTest {
     }
 
     @Test
+    void testBuildPluginConfigAttributesWrapper() throws Exception {
+        Model actual = loadAndParse("build-plugin-config-attributes-wrapper.yaml");
+        Model expected = Model.newBuilder()
+                .modelVersion("4.0.0")
+                .groupId("org.apache.maven.extensions")
+                .artifactId("maven-yaml-extension")
+                .version("1.0.0-SNAPSHOT")
+                .name("Maven YAML Extension")
+                .build(Build.newBuilder()
+                        .plugins(List.of(Plugin.newBuilder()
+                                .groupId("org.apache.maven.plugins")
+                                .artifactId("maven-shade-plugin")
+                                .version("3.5.0")
+                                .configuration(XmlNode.newInstance(
+                                        "configuration",
+                                        null,
+                                        null,
+                                        List.of(XmlNode.newInstance(
+                                                "transformers",
+                                                null,
+                                                null,
+                                                List.of(XmlNode.newInstance(
+                                                        "transformer",
+                                                        null,
+                                                        Map.of(
+                                                                "implementation",
+                                                                "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"),
+                                                        List.of(
+                                                                XmlNode.newInstance(
+                                                                        "mainClass",
+                                                                        "com.example.Main",
+                                                                        null,
+                                                                        null,
+                                                                        null)),
+                                                        null)),
+                                                null)),
+                                        null))
+                                .build()))
+                        .build())
+                .build();
+
+        assertModelEquals(expected, actual);
+    }
+
+    @Test
     void testBuildExtensions() throws Exception {
         Model actual = loadAndParse("build-extensions.yaml");
         Model expected = Model.newBuilder()
