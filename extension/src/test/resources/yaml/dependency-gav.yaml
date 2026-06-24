@@ -14,9 +14,9 @@ dependencies:
   - org.apache.maven:maven-core:3.9.0
   # g:a:v@scope
   - org.junit.jupiter:junit-jupiter:5.9.3@test
-  # g:a:v:type
-  - org.apache.maven:maven-model:3.9.0:jar
-  # g:a:v:type@scope
-  - org.apache.maven:maven-core:3.9.0:jar@provided
-  # g:a:v:type:classifier@scope
-  - org.apache.maven:maven-core:3.9.0:test-jar:tests@test
+  # g:a:type:v
+  - org.apache.maven:maven-model:jar:3.9.0
+  # g:a:type:v@scope
+  - org.apache.maven:maven-core:jar:3.9.0@provided
+  # g:a:type:classifier:v@scope
+  - org.apache.maven:maven-core:test-jar:tests:3.9.0@test

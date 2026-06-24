@@ -218,19 +218,19 @@ All parts are optional with Maven 4's inference mechanism (they can be inferred 
 
 ### Dependency Strings
 
-Dependencies support an extended syntax with type, classifier, scope, and optional marker:
+Dependencies use Maven's standard coordinate format, with version always last:
 
 ```
-groupId:artifactId[:version][:type][:classifier][@scope][?]
+groupId:artifactId[[:type[:classifier]]:version][@scope][?]
 ```
 
 | Element | Delimiter | Description |
 |---------|-----------|-------------|
 | `groupId` | first `:` segment | Maven group ID |
 | `artifactId` | second `:` segment | Maven artifact ID |
-| `version` | third `:` segment | Version (optional) |
-| `type` | fourth `:` segment | Packaging type, e.g. `jar`, `test-jar`, `pom` |
-| `classifier` | fifth `:` segment | Classifier, e.g. `tests`, `sources` |
+| `type` | third `:` segment (when 4+ parts) | Packaging type, e.g. `jar`, `test-jar`, `pom` |
+| `classifier` | fourth `:` segment (when 5 parts) | Classifier, e.g. `tests`, `sources` |
+| `version` | last `:` segment | Version (always last, optional) |
 | `@scope` | after `@` | Scope: `compile`, `provided`, `runtime`, `test`, `system`, `import` |
 | `?` | trailing suffix | Marks the dependency as optional |
 
@@ -238,12 +238,12 @@ groupId:artifactId[:version][:type][:classifier][@scope][?]
 
 | String | Description |
 |--------|-------------|
-| `org.apache.maven:maven-core:3.9.0` | Basic G:A:V |
+| `org.apache.maven:maven-core:3.9.0` | G:A:V |
 | `org.junit.jupiter:junit-jupiter-api@test` | G:A with scope (version inferred) |
 | `org.apache.maven:maven-api-spi:${maven.version}@provided` | G:A:V with scope |
-| `org.apache.maven:maven-model:3.9.0:jar` | G:A:V with type |
-| `org.apache.maven:maven-core:3.9.0:jar@provided` | G:A:V:type with scope |
-| `org.apache.maven:maven-core:3.9.0:test-jar:tests@test` | G:A:V:type:classifier with scope |
+| `org.apache.maven:maven-model:jar:3.9.0` | G:A:type:V |
+| `org.apache.maven:maven-core:jar:3.9.0@provided` | G:A:type:V with scope |
+| `org.apache.maven:maven-core:test-jar:tests:3.9.0@test` | G:A:type:classifier:V with scope |
 | `org.junit:junit-bom:5.12.0@import` | BOM import |
 | `commons-io:commons-io:2.11.0?` | Optional dependency |
 
