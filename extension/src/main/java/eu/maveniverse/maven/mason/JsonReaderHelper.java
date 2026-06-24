@@ -79,14 +79,16 @@ public class JsonReaderHelper {
     }
 
     /**
-     * Parses a GASVTCO (GroupId:ArtifactId[:Version][:Type][:Classifier][@Scope][?]) string.
+     * Parses a dependency coordinate string using Maven's standard format:
+     * {@code groupId:artifactId[[:type[:classifier]]:version][@scope][?]}
+     * <p>
      * With Maven 4's inference mechanism, groupId can be optional as it may be inferred
      * from dependency management or parent. ArtifactId is still required.
      * @return String array containing [groupId, artifactId, scope, version, type, classifier, optional]
      */
     public static String[] parseGasvtcoString(String str, JsonParser parser) throws IOException {
         if (str == null) {
-            throw new IOException("GASVTC string cannot be null at line "
+            throw new IOException("Dependency coordinate string cannot be null at line "
                     + parser.currentLocation().getLineNr() + ", column "
                     + parser.currentLocation().getColumnNr());
         }
@@ -111,22 +113,32 @@ public class JsonReaderHelper {
             return result;
         }
 
+        // Maven standard coordinate format: groupId:artifactId[[:type[:classifier]]:version]
+        //   2 parts: g:a
+        //   3 parts: g:a:v
+        //   4 parts: g:a:type:v
+        //   5 parts: g:a:type:classifier:v
         String[] parts = coords.split(":", -1); // -1 to keep trailing empty strings
         if (parts.length > 5) {
-            throw new IOException(
-                    "GASVTC string must have at most 5 parts (groupId:artifactId[:version][:type][:classifier]), found "
-                            + parts.length + " parts in '" + str + "' at line "
-                            + parser.currentLocation().getLineNr()
-                            + ", column " + parser.currentLocation().getColumnNr());
+            throw new IOException("Dependency coordinate string must have at most 5 parts"
+                    + " (groupId:artifactId[[:type[:classifier]]:version]), found "
+                    + parts.length + " parts in '" + str + "' at line "
+                    + parser.currentLocation().getLineNr()
+                    + ", column " + parser.currentLocation().getColumnNr());
         }
 
-        // With Maven 4 inference, groupId can be optional (inferred from dependencyManagement or parent)
-        // ArtifactId is typically still required for dependencies
         if (parts.length > 0) result[0] = parts[0].isEmpty() ? null : parts[0]; // groupId
         if (parts.length > 1) result[1] = parts[1].isEmpty() ? null : parts[1]; // artifactId
-        if (parts.length > 2) result[3] = parts[2].isEmpty() ? null : parts[2]; // version
-        if (parts.length > 3) result[4] = parts[3].isEmpty() ? null : parts[3]; // type
-        if (parts.length > 4) result[5] = parts[4].isEmpty() ? null : parts[4]; // classifier
+        if (parts.length == 3) {
+            result[3] = parts[2].isEmpty() ? null : parts[2]; // version
+        } else if (parts.length == 4) {
+            result[4] = parts[2].isEmpty() ? null : parts[2]; // type
+            result[3] = parts[3].isEmpty() ? null : parts[3]; // version
+        } else if (parts.length == 5) {
+            result[4] = parts[2].isEmpty() ? null : parts[2]; // type
+            result[5] = parts[3].isEmpty() ? null : parts[3]; // classifier
+            result[3] = parts[4].isEmpty() ? null : parts[4]; // version
+        }
 
         // Set scope and optional flag
         result[2] = scope; // scope

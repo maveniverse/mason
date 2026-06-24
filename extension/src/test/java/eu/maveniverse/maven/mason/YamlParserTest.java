@@ -416,14 +416,14 @@ class YamlParserTest {
                                 .scope("test")
                                 .version("5.9.3")
                                 .build(),
-                        // g:a:v:type
+                        // g:a:type:v
                         Dependency.newBuilder()
                                 .groupId("org.apache.maven")
                                 .artifactId("maven-model")
                                 .version("3.9.0")
                                 .type("jar")
                                 .build(),
-                        // g:a:scope:v:type
+                        // g:a:type:v@scope
                         Dependency.newBuilder()
                                 .groupId("org.apache.maven")
                                 .artifactId("maven-core")
@@ -431,7 +431,7 @@ class YamlParserTest {
                                 .version("3.9.0")
                                 .type("jar")
                                 .build(),
-                        // g:a:scope:v:type:classifier
+                        // g:a:type:classifier:v@scope
                         Dependency.newBuilder()
                                 .groupId("org.apache.maven")
                                 .artifactId("maven-core")
