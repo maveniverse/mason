@@ -197,6 +197,106 @@ dependencies = [
         params = ["packageModelV4=org.apache.maven.api.model"]
 ```
 
+## Compact String Syntax
+
+Mason lets you write Maven coordinates as compact strings instead of verbose XML-style objects.
+
+### GAV Strings
+
+Used for `parent`, project `id`, plugins, and extensions:
+
+```
+groupId:artifactId[:version]
+```
+
+All parts are optional with Maven 4's inference mechanism (they can be inferred from parent or dependency management).
+
+| Example | Description |
+|---------|-------------|
+| `org.apache:apache:28` | Full G:A:V |
+| `org.apache.maven.plugins:maven-compiler-plugin` | G:A only (version inferred) |
+
+### Dependency Strings
+
+Dependencies use Maven's standard coordinate format, with version always last:
+
+```
+groupId:artifactId[[:type[:classifier]]:version][@scope][?]
+```
+
+| Element | Delimiter | Description |
+|---------|-----------|-------------|
+| `groupId` | first `:` segment | Maven group ID |
+| `artifactId` | second `:` segment | Maven artifact ID |
+| `type` | third `:` segment (when 4+ parts) | Packaging type, e.g. `jar`, `test-jar`, `pom` |
+| `classifier` | fourth `:` segment (when 5 parts) | Classifier, e.g. `tests`, `sources` |
+| `version` | last `:` segment | Version (always last, optional) |
+| `@scope` | after `@` | Scope: `compile`, `provided`, `runtime`, `test`, `system`, `import` |
+| `?` | trailing suffix | Marks the dependency as optional |
+
+**Examples:**
+
+| String | Description |
+|--------|-------------|
+| `org.apache.maven:maven-core:3.9.0` | G:A:V |
+| `org.junit.jupiter:junit-jupiter-api@test` | G:A with scope (version inferred) |
+| `org.apache.maven:maven-api-spi:${maven.version}@provided` | G:A:V with scope |
+| `org.apache.maven:maven-model:jar:3.9.0` | G:A:type:V |
+| `org.apache.maven:maven-core:jar:3.9.0@provided` | G:A:type:V with scope |
+| `org.apache.maven:maven-core:test-jar:tests:3.9.0@test` | G:A:type:classifier:V with scope |
+| `org.junit:junit-bom:5.12.0@import` | BOM import |
+| `commons-io:commons-io:2.11.0?` | Optional dependency |
+
+### The `id` Field
+
+Instead of a bare string, you can use the `id` field inside an object. This is useful when you need to specify additional properties alongside the compact coordinates:
+
+```yaml
+dependencies:
+  - id: org.apache.maven:maven-core:3.9.0@provided
+  - id: org.junit.jupiter:junit-jupiter-api@test
+    exclusions:
+      - org.junit.jupiter:junit-jupiter-engine
+
+parent:
+  id: org.apache:apache:28
+  relativePath: ../pom.xml
+
+build:
+  plugins:
+    - id: org.apache.maven.plugins:maven-compiler-plugin:3.11.0
+      configuration:
+        release: 17
+```
+
+### Direct String Values
+
+Any object that supports compact syntax can be written as a plain string. These are equivalent:
+
+```yaml
+# Compact string
+parent: org.apache:apache:28
+
+# Expanded object
+parent:
+  groupId: org.apache
+  artifactId: apache
+  version: "28"
+```
+
+```yaml
+# Compact string
+dependencies:
+  - org.apache.maven:maven-core:3.9.0@provided
+
+# Expanded object
+dependencies:
+  - groupId: org.apache.maven
+    artifactId: maven-core
+    version: 3.9.0
+    scope: provided
+```
+
 ## Building
 
 ```bash
