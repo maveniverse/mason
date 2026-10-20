@@ -141,7 +141,7 @@ public class JsonReaderHelper {
     public static InputLocation createLocation(
             JsonParser parser, InputSource inputSrc, boolean addLocationInformation) {
         return addLocationInformation
-                ? new InputLocation(
+                ? InputLocation.of(
                         parser.currentLocation().getLineNr(),
                         parser.currentLocation().getColumnNr(),
                         inputSrc)
@@ -199,7 +199,7 @@ public class JsonReaderHelper {
         Map<String, String> attributes = new LinkedHashMap<>();
         List<XmlNode> children = new ArrayList<>();
         InputLocation location = addLocationInformation
-                ? new InputLocation(
+                ? InputLocation.of(
                         parser.currentLocation().getLineNr(),
                         parser.currentLocation().getColumnNr(),
                         inputSrc)
