@@ -13,8 +13,8 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.dataformat.toml.TomlFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.maven.api.Dialect;
@@ -25,78 +25,49 @@ import org.apache.maven.api.di.Singleton;
 import org.apache.maven.api.model.Model;
 import org.apache.maven.api.services.Source;
 import org.apache.maven.api.services.Sources;
-import org.apache.maven.api.spi.DialectProvider;
 import org.apache.maven.api.spi.ModelDialectProvider;
 import org.apache.maven.api.spi.ModelParser;
 import org.apache.maven.api.spi.ModelParserException;
 import org.apache.maven.api.spi.ModelWriter;
 
 /**
- * Registers Mason's dialects (yaml, toml, json, hocon) as {@link ModelDialectProvider} instances
- * and also contributes the corresponding {@link Dialect} enum values via {@link DialectProvider}.
+ * Registers Mason's dialects (yaml, toml, json, hocon) as {@link ModelDialectProvider} instances.
  *
  * <p>Each inner class handles one format. The {@link MasonParser} is reused for reading;
  * {@link MasonModelWriter} handles writing.
+ *
+ * <p>The four {@link Dialect} constants are created via the public {@link Dialect#of(String)} factory.
+ * Maven's {@code DefaultDialectRegistry} automatically discovers all {@link ModelDialectProvider}
+ * implementations via DI and registers their dialects in the registry — no separate
+ * {@code DialectProvider} implementation is needed.
  *
  * @since 0.4.0
  */
 public class MasonModelDialectProvider {
 
     // -------------------------------------------------------------------------
-    // Dialect constants — declared here so the whole mason module shares them
+    // Dialect constants — shared across the mason module
     // -------------------------------------------------------------------------
 
-    public static final Dialect YAML = dialectOf("yaml");
-    public static final Dialect TOML = dialectOf("toml");
-    public static final Dialect JSON = dialectOf("json");
-    public static final Dialect HOCON = dialectOf("hocon");
+    /** The YAML dialect (reads {@code pom.yaml} / {@code pom.yml}, writes {@code pom.yaml}). */
+    public static final Dialect YAML = Dialect.of("yaml");
 
-    /**
-     * Creates a simple {@link Dialect} implementation for the given id.
-     * We cannot call the package-private {@code ExtensibleEnums.dialect()} from here,
-     * so we implement the interface directly.
-     */
-    private static Dialect dialectOf(String id) {
-        return new Dialect() {
-            @Override
-            public String id() {
-                return id;
-            }
+    /** The TOML dialect (reads {@code pom.toml}, writes {@code pom.toml}). */
+    public static final Dialect TOML = Dialect.of("toml");
 
-            @Override
-            public int hashCode() {
-                return id.hashCode();
-            }
+    /** The JSON dialect (reads {@code pom.json}, writes {@code pom.json}). */
+    public static final Dialect JSON = Dialect.of("json");
 
-            @Override
-            public boolean equals(Object obj) {
-                return obj instanceof Dialect && id.equals(((Dialect) obj).id());
-            }
-
-            @Override
-            public String toString() {
-                return "Dialect[" + id + "]";
-            }
-        };
-    }
-
-    // -------------------------------------------------------------------------
-    // DialectProvider — registers the four mason dialects in the registry
-    // -------------------------------------------------------------------------
-
-    @Named("mason")
-    @Singleton
-    public static class MasonDialectProvider implements DialectProvider {
-        @Override
-        public List<Dialect> provides() {
-            return List.of(YAML, TOML, JSON, HOCON);
-        }
-    }
+    /** The HOCON dialect (reads {@code pom.hocon} / {@code pom.conf}, writes {@code pom.hocon}). */
+    public static final Dialect HOCON = Dialect.of("hocon");
 
     // -------------------------------------------------------------------------
     // Shared ModelParser adapter that delegates to MasonParser
     // -------------------------------------------------------------------------
 
+    /**
+     * Adapts the format-agnostic {@link MasonParser} to a specific set of file extensions.
+     */
     private static final class SingleFormatParser implements ModelParser {
         private final MasonParser delegate;
         private final String[] extensions;
@@ -108,9 +79,12 @@ public class MasonModelDialectProvider {
 
         @Override
         public Optional<Source> locate(Path dir) {
+            if (!Files.isDirectory(dir)) {
+                return Optional.empty();
+            }
             for (String ext : extensions) {
                 Path pom = dir.resolve("pom" + ext);
-                if (pom.toFile().exists()) {
+                if (Files.isRegularFile(pom)) {
                     return Optional.of(Sources.fromPath(pom));
                 }
             }
@@ -243,7 +217,7 @@ public class MasonModelDialectProvider {
 
         @Inject
         public HoconDialectProvider(MasonParser masonParser) {
-            // HOCON write uses JSON format (HOCON is a superset of JSON)
+            // HOCON write uses JSON format (HOCON is a strict superset of JSON)
             JsonFactory jsonFactory = JsonFactory.builder()
                     .enable(JsonReadFeature.ALLOW_JAVA_COMMENTS)
                     .enable(JsonReadFeature.ALLOW_YAML_COMMENTS)
